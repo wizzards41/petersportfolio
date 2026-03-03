@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MY Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1b2735, #090a0f 70%);
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #8be9fd, #bd93f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header h2 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #8be9fd, #bd93f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #cfd8dc;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 10;
+    }
+
+    nav a {
+      color: #ffffff;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      color: #8be9fd;
+    }
+
+    section {
+      padding: 5rem 10%;
+      scroll-margin-top: 100px;
+    }
+
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #9aa7b1;
+    }
+
+    .img-box {
+      width:100%;
+      max-width:300px;
+      height:200px;
+      border-radius:14px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      backdrop-filter:blur(10px);
+      box-shadow:0 0 25px rgba(138,43,226,0.35);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .media-box {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      border-radius: 10%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(138,43,226,0.35);
+    }
+
+    .media-box img,
+    .media-box video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .media-box video {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .media-box:hover img {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+
+    .media-box:hover video {
+      opacity: 1;
+    }
+
+    .img-box img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .img-box:hover {
+      transform: scale(1.05);
+      box-shadow:0 0 45px rgba(138,43,226,0.6);
+    }
+
+    .reveal {
+      opacity:0;
+      transform: translateX(60px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity:1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size:2.4rem;
+      }
+
+      section {
+        padding:3rem 6%;
+      }
+
+      .project-row {
+        grid-template-columns:1fr !important;
+        text-align:center;
+      }
+
+      .img-box {
+        margin:0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="stars"></canvas>
+
+  <nav>
+    <strong>MyGalaxy</strong>
+    <div>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Self-Assessment</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <header id="home">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
+      <div style="width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#8be9fd,#bd93f9);padding:4px;">
+        <div style="width:100%;height:100%;border-radius:50%;background:#0b0f1a;display:flex;align-items:center;justify-content:center;">
+         <img src="img/my picture.jpg" alt="Profile Picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+        </div>
+      </div>
+      <h1>My E-PORTFOLIO</h1>
+      <h2>Peter Caitona</h2>
+      <p>BSCS - 4</p>
+        
+  </header>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
+    Hello! I am Peter G. Caitona, a 4th-year Bachelor of Science in Computer Science (BSCS) student. 
+    While I may not always excel in academic activities, I am committed to improving myself every day.
+     I make a consistent effort to listen carefully, understand my lessons, and learn from my instructors and classmates.
+    </p>
+    <br>
+    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
+     Computer Science is a challenging field, but it motivates me to push beyond my limits.
+      I believe that learning is a continuous process, and growth comes from effort, patience, and determination. 
+      I am doing my best to develop my skills in programming and technology, and I am open to learning from mistakes and experiences.
+       My goal is to become a better version of myself and gradually build the knowledge and confidence needed to succeed in the IT industry.
+    </p>
+  </section>
+
+  <section id="projects">
+    <h2>Self-Assessment</h2>
+    <div class="project-row reveal" style="display:grid;grid-template-columns:300px 1fr;gap:2rem;align-items:center;margin-bottom:4rem;">
+      <div class="img-box">
+        <img src="img/harmonywithgod.webp" alt="Project Image">
+      </div>
+      <div style="color:#cfd8dc;line-height:1.6;">
+        <h1 style="color:#8be9fd;margin-bottom:1rem;">Harmony with God</h1>
+        <h3 style="color:#8be9fd;margin-bottom:1rem;">A. How does faith, prayer, or spirituality guide me toward peace?</h3>
+        <p>My faith helps me stay calm during problems. When I pray, I feel relieved and less stressed. 
+          It gives me hope and reminds me that I am not alone in facing challenges.</p><br>
+          <h3 style="color:#8be9fd;margin-bottom:1rem;">B. What values do I practice because of my belief in God?</h3>
+          <p>Because of my belief in God, I try to practice kindness, patience, respect, honesty, and forgiveness. 
+            I try to treat others the way I want to be treated.</p>
+      </div>
+    </div>
+
+    <div class="project-row reveal" style="display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:center;">
+      <div style="color:#cfd8dc;line-height:1.6;">
+        <h1 style="color:#bd93f9;margin-bottom:1rem;">Harmony with the Self </h1>
+          <h3 style="color:#bd93f9;margin-bottom:1rem;">A. How do I maintain inner peace?</h3>
+        <p>I maintain inner peace by staying positive and accepting that I cannot control everything.
+           I take time to rest, think, and improve myself little by little..</p><br>
+            <h3 style="color:#bd93f9;margin-bottom:1rem;">B. What habits, values, or attitudes help me manage my emotions?</h3>
+        <p>I try to stay calm when I am stressed or angry. I listen more, think before I speak, and remind myself to be patient.
+           I also learn from my mistakes instead of blaming myself too much.</p>
+      </div>
+      <div class="img-box">
+        <img src="img/Harmony with the Self.png" alt="Project Image">
+      </div>
+    </div>
+<br>
+<br> 
+    <div class="project-row reveal" style="display:grid;grid-template-columns:300px 1fr;gap:2rem;align-items:center;margin-bottom:4rem;">
+      <div class="img-box">
+        <img src="img/harmonywithothers.webp" alt="Project Image">
+      </div>
+      <div style="color:#cfd8dc;line-height:1.6;">
+        <h1 style="color:#8be9fd;margin-bottom:1rem;">Harmony with Others<h1>
+          <h3 style="color:#8be9fd;margin-bottom:1rem;">A . How do I promote peace in my family, school, or community?</h3>
+        <p>I promote peace by respecting others, avoiding arguments, and helping when I can. 
+          I try to understand different opinions and stay calm during misunderstandings.</p><br>
+          <h3 style="color:#8be9fd;margin-bottom:1rem;">B. How can conflicts be resolved peacefully?</h3>
+        <p>Conflicts can be resolved by talking calmly, listening to both sides, and being willing to compromise.
+           Saying sorry and forgiving each other also help solve problems peacefully.</p>
+      </div>
+    </div>
+
+    <div class="project-row reveal" style="display:grid;grid-template-columns:1fr 300px;gap:2rem;align-items:center;">
+      <div style="color:#cfd8dc;line-height:1.6;">
+        <h1 style="color:#bd93f9;margin-bottom:1rem;">Harmony with Nature</h1>
+        <h3 style="color:#bd93f9;margin-bottom:1rem;">A. How do I show care for the environment?</h3>
+        <p>I show care for the environment by not littering, saving water and electricity, and keeping my surroundings clean.</p>
+        <h3 style="color:#bd93f9;margin-bottom:1rem;">B Why is protecting nature important for peace?</h3>
+        <p>Protecting nature is important because a clean and healthy environment helps people live safely and comfortably.
+           When nature is protected, future generations can also enjoy and benefit from it.</p>
+      </div>
+      <div class="img-box">
+        <img src="img/harmony with nature.jpg" alt="Project Image">
+      </div>
+    </div>
+    
+
+  </section>
+  
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p style="text-align:center;">Email: petafromyt@email.com</p>
+    <p style="text-align:center;">Cellphone Number: 09366784396</p>
+  </section>
+
+  <footer>
+    © 2026 Peter Caitona • Galaxy Portfolio
+    
+  </footer>
+
+  <script>
+    // Star background
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    const stars = Array.from({ length: 200 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.5,
+      s: Math.random() * 0.5 + 0.2
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.s;
+        if (star.y > h) star.y = 0;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.2 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Media box video hover
+    window.addEventListener("DOMContentLoaded", () => {
+      const mediaBox = document.querySelector('.media-box');
+      if (!mediaBox) return;
+      const video = mediaBox.querySelector('video');
+      mediaBox.addEventListener('mouseenter', () => video.play());
+      mediaBox.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+    });
+
+    // Smooth scroll accounting for navbar height
+    const navbarHeight = document.querySelector('nav').offsetHeight;
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        let targetPosition;
+        if (targetId === "home") {
+          targetPosition = 0; // scroll to top
+        } else {
+          const target = document.getElementById(targetId);
+          if (!target) return;
+          targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+        }
+        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
