@@ -4,306 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MY Portfolio</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #1b2735, #090a0f 70%);
-      color: #ffffff;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    header {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 3.5rem;
-      letter-spacing: 2px;
-      background: linear-gradient(90deg, #8be9fd, #bd93f9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    header h2 {
-      font-size: 3rem;
-      letter-spacing: 2px;
-      background: linear-gradient(90deg, #8be9fd, #bd93f9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    header p {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      color: #cfd8dc;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 10;
-    }
-
-    nav a {
-      color: #ffffff;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-
-    nav a:hover {
-      color: #8be9fd;
-    }
-
-    section {
-      padding: 5rem 10%;
-      scroll-margin-top: 100px;
-    }
-
-    section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      padding: 2rem;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
-      transition: transform 0.4s, box-shadow 0.4s;
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 0 50px rgba(138, 43, 226, 0.5);
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #9aa7b1;
-    }
-
-    .img-box {
-      width:100%;
-      max-width:300px;
-      height:200px;
-      border-radius:14px;
-      overflow:hidden;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.15);
-      backdrop-filter:blur(10px);
-      box-shadow:0 0 25px rgba(138,43,226,0.35);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .media-box {
-      position: relative;
-      width: 260px;
-      height: 260px;
-      border-radius: 10%;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 25px rgba(138,43,226,0.35);
-    }
-
-    .media-box img,
-    .media-box video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: inherit;
-      transition: opacity 0.45s ease, transform 0.45s ease;
-    }
-
-    .media-box video {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .media-box:hover img {
-      opacity: 0;
-      transform: scale(1.03);
-    }
-
-    .media-box:hover video {
-      opacity: 1;
-    }
-
-    .img-box img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-
-    .img-box:hover {
-      transform: scale(1.05);
-      box-shadow:0 0 45px rgba(138,43,226,0.6);
-    }
-
-    .reveal {
-      opacity:0;
-      transform: translateX(60px);
-      transition: all 0.8s ease;
-    }
-
-    .reveal.active {
-      opacity:1;
-      transform: translateX(0);
-    }
-
-    /* ── Internal Conflict Section ── */
-    #internal-conflict h2 {
-      background: linear-gradient(90deg, #f1fa8c, #ffb86c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .conflict-intro {
-      max-width: 800px;
-      margin: 0 auto 3rem auto;
-      text-align: center;
-      color: #cfd8dc;
-      line-height: 1.7;
-      font-style: italic;
-      opacity: 0.85;
-    }
-
-    .conflict-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.8rem;
-    }
-
-    .conflict-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(241, 250, 140, 0.15);
-      border-radius: 18px;
-      padding: 1.8rem 2rem;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 28px rgba(255, 184, 108, 0.12);
-      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .conflict-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(180deg, #f1fa8c, #ffb86c);
-      border-radius: 4px 0 0 4px;
-    }
-
-    .conflict-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      box-shadow: 0 0 50px rgba(255, 184, 108, 0.3);
-      border-color: rgba(241, 250, 140, 0.35);
-    }
-
-    .conflict-card .q-number {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #ffb86c;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .conflict-card h3 {
-      font-size: 1.05rem;
-      color: #f1fa8c;
-      margin-bottom: 1rem;
-      line-height: 1.4;
-    }
-
-    .conflict-card p {
-      color: #cfd8dc;
-      line-height: 1.75;
-      font-size: 0.95rem;
-    }
-
-    .conflict-card .icon {
-      font-size: 1.8rem;
-      margin-bottom: 0.8rem;
-      display: block;
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size:2.4rem;
-      }
-
-      section {
-        padding:3rem 6%;
-      }
-
-      .project-row {
-        grid-template-columns:1fr !important;
-        text-align:center;
-      }
-
-      .img-box {
-        margin:0 auto;
-      }
-
-      .conflict-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+  <div id="scroll-progress"></div>
   <canvas id="stars"></canvas>
 
   <nav>
     <strong>MyGalaxy</strong>
-    <div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-links">
       <a href="#home">Home</a>
       <a href="#about">About</a>
       <a href="#projects">Self-Assessment</a>
@@ -320,7 +35,7 @@
         </div>
       </div>
       <h1>My E-PORTFOLIO</h1>
-      <h2>Peter Caitona</h2>
+      <h2><span id="typed-name">Peter Caitona</span></h2>
       <p>BSCS - 4</p>
     </div>
   </header>
@@ -490,7 +205,14 @@
 
   <section id="contact">
     <h2>Contact</h2>
-    <p style="text-align:center;">Email: petafromyt@email.com</p>
+    <form id="contact-form" class="contact-form">
+      <input type="text" id="name" name="name" placeholder="Your name" required>
+      <input type="email" id="email" name="email" placeholder="Your email" required>
+      <textarea id="message" name="message" rows="4" placeholder="Your message" required></textarea>
+      <button type="submit">Send Message</button>
+      <p class="form-status" id="form-status"></p>
+    </form>
+    <p style="text-align:center;margin-top:1.5rem;">Email: petafromyt@email.com</p>
     <p style="text-align:center;">Cellphone Number: 09366784396</p>
   </section>
 
@@ -498,71 +220,9 @@
     © 2026 Peter Caitona • Galaxy Portfolio
   </footer>
 
-  <script>
-    // Star background
-    const canvas = document.getElementById('stars');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
+  <button id="back-to-top" aria-label="Back to top">↑</button>
 
-    const stars = Array.from({ length: 200 }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 1.5,
-      s: Math.random() * 0.5 + 0.2
-    }));
-
-    function animate() {
-      ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = '#ffffff';
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-        ctx.fill();
-        star.y += star.s;
-        if (star.y > h) star.y = 0;
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) entry.target.classList.add('active');
-      });
-    }, { threshold: 0.2 });
-    reveals.forEach(r => observer.observe(r));
-
-    // Media box video hover
-    window.addEventListener("DOMContentLoaded", () => {
-      const mediaBox = document.querySelector('.media-box');
-      if (!mediaBox) return;
-      const video = mediaBox.querySelector('video');
-      mediaBox.addEventListener('mouseenter', () => video.play());
-      mediaBox.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
-    });
-
-    // Smooth scroll accounting for navbar height
-    const navbarHeight = document.querySelector('nav').offsetHeight;
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').substring(1);
-        let targetPosition;
-        if (targetId === "home") {
-          targetPosition = 0;
-        } else {
-          const target = document.getElementById(targetId);
-          if (!target) return;
-          targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
-        }
-        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
