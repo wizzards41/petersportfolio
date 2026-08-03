@@ -171,13 +171,13 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ── Contact form feedback (no backend — opens mail client) ──
+// ── Contact form: saves to the database via contact.php ──
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
   const status = document.getElementById('form-status');
   if (!form) return;
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const name = form.querySelector('#name').value.trim();
     const email = form.querySelector('#email').value.trim();
@@ -185,14 +185,32 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (!name || !email || !message) {
       status.textContent = 'Please fill in every field before sending.';
+      status.style.color = '#ff8a8a';
       return;
     }
 
-    const subject = encodeURIComponent(`Portfolio message from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:petafromyt@email.com?subject=${subject}&body=${body}`;
+    status.textContent = 'Sending...';
+    status.style.color = '#8be9fd';
 
-    status.textContent = 'Opening your email app to send this message...';
-    form.reset();
+    try {
+      const res = await fetch('contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        status.textContent = 'Message sent. Thank you!';
+        status.style.color = '#8be9fd';
+        form.reset();
+      } else {
+        status.textContent = data.error || 'Something went wrong. Please try again.';
+        status.style.color = '#ff8a8a';
+      }
+    } catch (err) {
+      status.textContent = 'Could not reach the server. Please try again later.';
+      status.style.color = '#ff8a8a';
+    }
   });
 });
