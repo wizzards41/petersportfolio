@@ -158,6 +158,19 @@ window.addEventListener('DOMContentLoaded', () => {
   typeChar();
 });
 
+// ── Glitch text effect (Solana-style periodic burst) ──
+window.addEventListener('DOMContentLoaded', () => {
+  const glitchEls = document.querySelectorAll('.glitch');
+  glitchEls.forEach(el => {
+    function burst() {
+      el.classList.add('glitch-active');
+      setTimeout(() => el.classList.remove('glitch-active'), 220);
+      setTimeout(burst, 2500 + Math.random() * 4000);
+    }
+    setTimeout(burst, 1200 + Math.random() * 2000);
+  });
+});
+
 // ── Contact form feedback (no backend — opens mail client) ──
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
