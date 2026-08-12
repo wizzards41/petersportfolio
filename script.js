@@ -72,9 +72,11 @@ function scrollToTarget(targetId) {
 }
 
 navLinks.forEach(link => {
+  const href = link.getAttribute('href');
+  if (!href.startsWith('#')) return; // let normal links (like admin.php) navigate as usual
   link.addEventListener('click', e => {
     e.preventDefault();
-    const targetId = link.getAttribute('href').substring(1);
+    const targetId = href.substring(1);
     scrollToTarget(targetId);
     if (navLinksContainer) navLinksContainer.classList.remove('open');
   });
