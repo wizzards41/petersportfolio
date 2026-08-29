@@ -9,26 +9,22 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-const stars = Array.from({ length: 250 }, () => ({ /* More stars */
+const stars = Array.from({ length: 200 }, () => ({
   x: Math.random() * w,
   y: Math.random() * h,
-  r: Math.random() * 1.8, /* Slightly larger stars */
-  s: Math.random() * 0.7 + 0.3, /* Faster stars */
-  a: Math.random() * 0.7 + 0.3 /* Initial opacity */
+  r: Math.random() * 1.5,
+  s: Math.random() * 0.5 + 0.2
 }));
 
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#ffffff';
   stars.forEach(star => {
-    ctx.fillStyle = `rgba(255, 255, 255, ${star.a})`; /* Use star's opacity */
     ctx.beginPath();
     ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
     ctx.fill();
     star.y += star.s;
-    if (star.y > h) {
-      star.y = 0;
-      star.x = Math.random() * w; /* Reset x as well */
-    }
+    if (star.y > h) star.y = 0;
   });
   requestAnimationFrame(animateStars);
 }
@@ -43,7 +39,7 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 reveals.forEach(r => revealObserver.observe(r));
 
-// ── Media box video hover ── (No media-box in provided HTML, but keeping for completeness)
+// ── Media box video hover ──
 window.addEventListener('DOMContentLoaded', () => {
   const mediaBox = document.querySelector('.media-box');
   if (mediaBox) {
@@ -77,7 +73,7 @@ function scrollToTarget(targetId) {
 
 navLinks.forEach(link => {
   const href = link.getAttribute('href');
-  if (!href.startsWith('#')) return;
+  if (!href.startsWith('#')) return; // let normal links (like admin.php) navigate as usual
   link.addEventListener('click', e => {
     e.preventDefault();
     const targetId = href.substring(1);
@@ -194,23 +190,11 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const subject = encodeURIComponent(`Galactic Transmission from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— Starfleet Agent ${name} (${email})`);
-    window.location.href = `mailto:commander.caitona@galactic.com?subject=${subject}&body=${body}`;
+    const subject = encodeURIComponent(`Portfolio message from ${name}`);
+    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:petafromyt@email.com?subject=${subject}&body=${body}`;
 
-    status.textContent = 'Initiating quantum relay to send transmission...';
+    status.textContent = 'Opening your email app to send this message...';
     form.reset();
-  });
-});
-
-
-// Cosmic dust effect for skill cards
-document.querySelectorAll('.skill-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width * 100;
-    const y = (e.clientY - rect.top) / rect.height * 100;
-    card.style.setProperty('--mouse-x', `${x}%`);
-    card.style.setProperty('--mouse-y', `${y}%`);
   });
 });
