@@ -8,6 +8,7 @@
   font-family: 'Space Mono', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Added Space Mono as a stylistic choice */
 }
 
+
 html {
   scroll-behavior: smooth;
 }
@@ -67,18 +68,6 @@ header .profile-picture-container {
               0 0 40px rgba(189, 147, 249, 0.5), /* Second glow layer */
               0 0 60px rgba(255, 184, 108, 0.3); /* Third glow layer */
   animation: pulse-glow 2s infinite alternate; /* Subtle pulsating glow */
-
-  /* Reveal specific styles for profile picture */
-  opacity: 0;
-  transform: scale(0.5);
-  transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transition-delay: var(--delay, 0s);
-}
-
-header .profile-picture-container.active {
-  opacity: 1;
-  transform: scale(1);
 }
 
 @keyframes pulse-glow {
@@ -112,17 +101,6 @@ header h1 {
   text-shadow: 0 0 15px rgba(139, 233, 253, 0.8), /* Neon glow */
                0 0 25px rgba(189, 147, 249, 0.6);
   margin-top: 1.5rem;
-
-  /* Reveal specific styles */
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  transition-delay: var(--delay, 0s);
-}
-
-header h1.glitch.active {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 header h2 {
@@ -134,17 +112,6 @@ header h2 {
   text-shadow: 0 0 10px rgba(189, 147, 249, 0.7),
                0 0 20px rgba(255, 184, 108, 0.5);
   min-height: 1.2em;
-
-  /* Reveal specific styles */
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  transition-delay: var(--delay, 0s);
-}
-
-header h2.active {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 header h2 .cursor {
@@ -360,141 +327,6 @@ section p {
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Subtle shadow for text */
 }
 
-/* ------------------------------------- */
-/* NEW ANIMATION CLASSES (REVEAL ON SCROLL) */
-/* ------------------------------------- */
-
-/* General reveal animation base */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px); /* Default: slide up */
-  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
-              transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transition-delay: var(--delay, 0s); /* Use custom property for delay */
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Specific reveal variations */
-.reveal.reveal-left {
-  transform: translateX(-50px);
-}
-.reveal.reveal-left.active {
-  transform: translateX(0);
-}
-
-.reveal.reveal-right {
-  transform: translateX(50px);
-}
-.reveal.reveal-right.active {
-  transform: translateX(0);
-}
-
-.reveal.reveal-scale {
-  transform: scale(0.8);
-}
-.reveal.reveal-scale.active {
-  transform: scale(1);
-}
-
-.reveal.fade-in { /* For elements that just fade, without movement */
-  transform: none; /* Override default translateY */
-  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  transition-delay: var(--delay, 0s);
-}
-.reveal.fade-in.active {
-  opacity: 1;
-}
-
-/* ------------------------------------- */
-/* Existing card styling integrated with reveal */
-/* ------------------------------------- */
-.skills-grid {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust min-width */
-  gap: 2rem; /* More space */
-}
-
-.social-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Slightly larger social cards */
-  gap: 2rem;
-}
-
-
-.skill-card,
-.social-card {
-  /* existing styling for appearance */
-  background: rgba(139,233,253,0.07); /* Example initial background */
-  border: 1px solid rgba(139,233,253,0.35); /* Example initial border */
-  border-radius: 18px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(139,233,253,0.2), inset 0 0 10px rgba(139,233,253,0.1);
-  /* Keep hover transitions separate but integrate delay */
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-              opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-              box-shadow 0.35s ease, background 0.35s ease, border-color 0.35s ease;
-  /* Apply delay to transform and opacity. Hover effects will still happen instantly on hover */
-  transition-delay: var(--delay, 0s), var(--delay, 0s), 0s, 0s, 0s;
-}
-
-.skill-card.reveal,
-.social-card.reveal {
-  opacity: 0;
-  transform: scale(0.85) translateY(30px); /* Start smaller and slightly lower */
-}
-
-.skill-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 0 30px rgba(139, 233, 253, 0.5), 0 0 50px rgba(189, 147, 249, 0.3); /* Dual glow on hover */
-  background: rgba(139, 233, 253, 0.12); /* Brighter on hover */
-  border-color: rgba(139, 233, 253, 0.6);
-}
-
-.skill-card div {
-  font-size: 3rem; /* Larger emojis */
-  margin-bottom: 0.8rem;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); /* Glow on emojis */
-}
-
-.skill-card h3 {
-  font-size: 1.25rem;
-  color: #8be9fd;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6);
-}
-
-.skill-card p {
-  color: #cfd8dc;
-  font-size: 0.95rem;
-}
-
-.social-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 0 30px rgba(189, 147, 249, 0.5), 0 0 50px rgba(255, 184, 108, 0.3); /* Dual glow on hover */
-  background: rgba(189, 147, 249, 0.12);
-  border-color: rgba(189, 147, 249, 0.6);
-}
-
-.social-card div {
-  font-size: 3.2rem; /* Larger emojis */
-  margin-bottom: 0.8rem;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
-}
-
-.social-card h3 {
-  font-size: 1.3rem;
-  color: #bd93f9;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 0 8px rgba(189, 147, 249, 0.6);
-}
-
-/* ------------------------------------- */
-/* Other elements */
-/* ------------------------------------- */
-
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly larger cards */
@@ -593,6 +425,16 @@ footer {
   box-shadow: 0 0 65px rgba(138, 43, 226, 0.8); /* Stronger glow */
 }
 
+.reveal {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95); /* Animate from slightly scaled down and below */
+  transition: all 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); /* Smoother, bouncier transition */
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
 
 /* ── Back to top button ── */
 #back-to-top {
@@ -631,9 +473,163 @@ footer {
   transform: translateY(-3px); /* Subtle lift on hover */
 }
 
-/* ------------------------------------- */
-/* Media Queries */
-/* ------------------------------------- */
+/* ── SKILLS Section (Our Cosmic Arsenal) ── */
+.skills-grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust min-width */
+  gap: 2rem; /* More space */
+}
+
+.skill-card {
+  background: rgba(139, 233, 253, 0.07); /* Slightly more prominent background */
+  border: 1px solid rgba(139, 233, 253, 0.35); /* Stronger border */
+  border-radius: 18px; /* More rounded */
+  padding: 2rem 1.5rem; /* More padding */
+  text-align: center;
+  transition: transform .35s ease, box-shadow .35s ease, background .35s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(139, 233, 253, 0.2), inset 0 0 10px rgba(139, 233, 253, 0.1);
+}
+
+.skill-card::before { /* Animated cosmic dust effect */
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.05) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px rgba(139, 233, 253, 0.5), 0 0 50px rgba(189, 147, 249, 0.3); /* Dual glow on hover */
+  background: rgba(139, 233, 253, 0.12); /* Brighter on hover */
+  border-color: rgba(139, 233, 253, 0.6);
+}
+
+.skill-card div {
+  font-size: 3rem; /* Larger emojis */
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); /* Glow on emojis */
+}
+
+.skill-card h3 {
+  font-size: 1.25rem;
+  color: #8be9fd;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 8px rgba(139, 233, 253, 0.6);
+}
+
+.skill-card p {
+  color: #cfd8dc;
+  font-size: 0.95rem;
+}
+
+/* ── SOCIAL Section (Interstellar Communications) ── */
+.social-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Slightly larger social cards */
+  gap: 2rem;
+}
+
+.social-card {
+  background: rgba(189, 147, 249, 0.07);
+  border: 1px solid rgba(189, 147, 249, 0.35);
+  border-radius: 18px;
+  padding: 2.2rem 1.5rem;
+  text-align: center;
+  transition: transform .35s ease, box-shadow .35s ease, background .35s ease;
+  box-shadow: 0 0 20px rgba(189, 147, 249, 0.2), inset 0 0 10px rgba(189, 147, 249, 0.1);
+}
+
+.social-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px rgba(189, 147, 249, 0.5), 0 0 50px rgba(255, 184, 108, 0.3); /* Dual glow on hover */
+  background: rgba(189, 147, 249, 0.12);
+  border-color: rgba(189, 147, 249, 0.6);
+}
+
+.social-card div {
+  font-size: 3.2rem; /* Larger emojis */
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+}
+
+.social-card h3 {
+  font-size: 1.3rem;
+  color: #bd93f9;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 8px rgba(189, 147, 249, 0.6);
+}
+
+/* ── Contact form feedback ── */
+.contact-form {
+  max-width: 550px; /* Slightly wider */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: rgba(255, 255, 255, 0.08); /* Brighter base */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Stronger border */
+  border-radius: 12px; /* More rounded */
+  padding: 1rem 1.2rem; /* More padding */
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  resize: vertical; /* Allow vertical resize for textarea */
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.4); /* Inner shadow */
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(207, 216, 220, 0.6); /* Lighter placeholder text */
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #8be9fd;
+  background: rgba(255, 255, 255, 0.12); /* Brighter on focus */
+  box-shadow: 0 0 20px rgba(139, 233, 253, 0.45), inset 0 0 10px rgba(139, 233, 253, 0.2); /* Stronger glow on focus */
+}
+
+.contact-form button {
+  background: linear-gradient(90deg, #8be9fd, #bd93f9, #ffb86c); /* More vibrant gradient */
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-weight: 700; /* Bolder text */
+  color: #0b0f1a;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  font-size: 1.1rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.contact-form button:hover {
+  transform: translateY(-4px); /* More pronounced lift */
+  box-shadow: 0 0 35px rgba(138, 43, 226, 0.7), 0 0 50px rgba(139, 233, 253, 0.5); /* Stronger dual glow */
+  background: linear-gradient(90deg, #bd93f9, #8be9fd, #ffb86c); /* Shift gradient on hover */
+}
+
+.form-status {
+  text-align: center;
+  min-height: 1.5em; /* More space */
+  font-size: 1rem;
+  color: #f1fa8c; /* Different status color */
+  text-shadow: 0 0 8px rgba(241, 250, 140, 0.5);
+}
 
 @media (prefers-reduced-motion: reduce) {
   * {
