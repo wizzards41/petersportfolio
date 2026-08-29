@@ -9,37 +9,82 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-const stars = Array.from({ length: 200 }, () => ({
+const stars = Array.from({ length: 250 }, () => ({ /* More stars */
   x: Math.random() * w,
   y: Math.random() * h,
-  r: Math.random() * 1.5,
-  s: Math.random() * 0.5 + 0.2
+  r: Math.random() * 1.8, /* Slightly larger stars */
+  s: Math.random() * 0.7 + 0.3, /* Faster stars */
+  a: Math.random() * 0.7 + 0.3 /* Initial opacity */
 }));
 
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = '#ffffff';
   stars.forEach(star => {
+    ctx.fillStyle = `rgba(255, 255, 255, ${star.a})`; /* Use star's opacity */
     ctx.beginPath();
     ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
     ctx.fill();
     star.y += star.s;
-    if (star.y > h) star.y = 0;
+    if (star.y > h) {
+      star.y = 0;
+      star.x = Math.random() * w; /* Reset x as well */
+    }
   });
   requestAnimationFrame(animateStars);
 }
 animateStars();
 
-// ── Reveal on scroll ──
-const reveals = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add('active');
-  });
-}, { threshold: 0.2 });
-reveals.forEach(r => revealObserver.observe(r));
+// ── Reveal on scroll animations ──
 
-// ── Media box video hover ──
+// This observer handles general elements with the 'reveal' class
+const generalReveals = Array.from(document.querySelectorAll('.reveal')).filter(el =>
+  !el.closest('.skills-grid') && !el.closest('.social-grid') // Exclude elements inside staggered grids
+);
+
+const generalRevealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+      // Set transition-delay if custom property --delay is defined
+      const delay = entry.target.style.getPropertyValue('--delay');
+      if (delay) {
+        entry.target.style.transitionDelay = delay;
+      }
+      generalRevealObserver.unobserve(entry.target); // Stop observing after animation
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }); // Trigger a bit before reaching the very top of the viewport
+
+generalReveals.forEach(r => generalRevealObserver.observe(r));
+
+
+// This function creates an IntersectionObserver for staggered animations within grids
+const createStaggeredObserver = (gridSelector, itemSelector) => {
+  const gridElements = document.querySelectorAll(gridSelector);
+  gridElements.forEach(grid => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(gridEntry => {
+        if (gridEntry.isIntersecting) {
+          const items = gridEntry.target.querySelectorAll(itemSelector);
+          items.forEach((item, index) => {
+            item.classList.add('active'); // Activate the item
+            item.style.setProperty('--delay', `${index * 0.12}s`); // Apply staggered delay
+          });
+          observer.unobserve(gridEntry.target); // Stop observing this grid after its children have animated
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }); // Trigger a bit before reaching the very top of the viewport
+
+    observer.observe(grid);
+  });
+};
+
+// Initialize staggered observers for skill and social grids
+createStaggeredObserver('.skills-grid', '.skill-card.reveal');
+createStaggeredObserver('.social-grid', '.social-card.reveal');
+
+
+// ── Media box video hover ── (No media-box in provided HTML, but keeping for completeness)
 window.addEventListener('DOMContentLoaded', () => {
   const mediaBox = document.querySelector('.media-box');
   if (mediaBox) {
@@ -73,7 +118,7 @@ function scrollToTarget(targetId) {
 
 navLinks.forEach(link => {
   const href = link.getAttribute('href');
-  if (!href.startsWith('#')) return; // let normal links (like admin.php) navigate as usual
+  if (!href.startsWith('#')) return;
   link.addEventListener('click', e => {
     e.preventDefault();
     const targetId = href.substring(1);
@@ -157,7 +202,8 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(typeChar, 90);
     }
   }
-  typeChar();
+  // Added a small delay to start typing after header animations for better flow
+  setTimeout(typeChar, 1000);
 });
 
 // ── Glitch text effect (Solana-style periodic burst) ──
@@ -169,7 +215,8 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => el.classList.remove('glitch-active'), 220);
       setTimeout(burst, 2500 + Math.random() * 4000);
     }
-    setTimeout(burst, 1200 + Math.random() * 2000);
+    // Added a small delay to start glitching after header animations
+    setTimeout(burst, 1500 + Math.random() * 2000);
   });
 });
 
@@ -190,11 +237,23 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const subject = encodeURIComponent(`Portfolio message from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:petafromyt@email.com?subject=${subject}&body=${body}`;
+    const subject = encodeURIComponent(`Galactic Transmission from ${name}`);
+    const body = encodeURIComponent(`${message}\n\n— Starfleet Agent ${name} (${email})`);
+    window.location.href = `mailto:commander.caitona@galactic.com?subject=${subject}&body=${body}`;
 
-    status.textContent = 'Opening your email app to send this message...';
+    status.textContent = 'Initiating quantum relay to send transmission...';
     form.reset();
+  });
+});
+
+
+// Cosmic dust effect for skill cards
+document.querySelectorAll('.skill-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width * 100;
+    const y = (e.clientY - rect.top) / rect.height * 100;
+    card.style.setProperty('--mouse-x', `${x}%`);
+    card.style.setProperty('--mouse-y', `${y}%`);
   });
 });
