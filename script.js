@@ -34,55 +34,14 @@ function animateStars() {
 }
 animateStars();
 
-// ── Reveal on scroll animations ──
-
-// This observer handles general elements with the 'reveal' class
-const generalReveals = Array.from(document.querySelectorAll('.reveal')).filter(el =>
-  !el.closest('.skills-grid') && !el.closest('.social-grid') // Exclude elements inside staggered grids
-);
-
-const generalRevealObserver = new IntersectionObserver(entries => {
+// ── Reveal on scroll ──
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('active');
-      // Set transition-delay if custom property --delay is defined
-      const delay = entry.target.style.getPropertyValue('--delay');
-      if (delay) {
-        entry.target.style.transitionDelay = delay;
-      }
-      generalRevealObserver.unobserve(entry.target); // Stop observing after animation
-    }
+    if (entry.isIntersecting) entry.target.classList.add('active');
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }); // Trigger a bit before reaching the very top of the viewport
-
-generalReveals.forEach(r => generalRevealObserver.observe(r));
-
-
-// This function creates an IntersectionObserver for staggered animations within grids
-const createStaggeredObserver = (gridSelector, itemSelector) => {
-  const gridElements = document.querySelectorAll(gridSelector);
-  gridElements.forEach(grid => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(gridEntry => {
-        if (gridEntry.isIntersecting) {
-          const items = gridEntry.target.querySelectorAll(itemSelector);
-          items.forEach((item, index) => {
-            item.classList.add('active'); // Activate the item
-            item.style.setProperty('--delay', `${index * 0.12}s`); // Apply staggered delay
-          });
-          observer.unobserve(gridEntry.target); // Stop observing this grid after its children have animated
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }); // Trigger a bit before reaching the very top of the viewport
-
-    observer.observe(grid);
-  });
-};
-
-// Initialize staggered observers for skill and social grids
-createStaggeredObserver('.skills-grid', '.skill-card.reveal');
-createStaggeredObserver('.social-grid', '.social-card.reveal');
-
+}, { threshold: 0.2 });
+reveals.forEach(r => revealObserver.observe(r));
 
 // ── Media box video hover ── (No media-box in provided HTML, but keeping for completeness)
 window.addEventListener('DOMContentLoaded', () => {
@@ -202,8 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(typeChar, 90);
     }
   }
-  // Added a small delay to start typing after header animations for better flow
-  setTimeout(typeChar, 1000);
+  typeChar();
 });
 
 // ── Glitch text effect (Solana-style periodic burst) ──
@@ -215,8 +173,7 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => el.classList.remove('glitch-active'), 220);
       setTimeout(burst, 2500 + Math.random() * 4000);
     }
-    // Added a small delay to start glitching after header animations
-    setTimeout(burst, 1500 + Math.random() * 2000);
+    setTimeout(burst, 1200 + Math.random() * 2000);
   });
 });
 
