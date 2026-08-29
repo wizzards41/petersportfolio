@@ -35,36 +35,36 @@
 
   <header id="home">
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
-      <div class="profile-picture-container reveal" style="--delay: 0.1s;"> <!-- Added reveal class with delay -->
+      <div class="profile-picture-container">
         <div class="profile-picture-inner">
          <img src="img/my picture.jpg" alt="Profile Picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
         </div>
       </div>
-      <h1 class="glitch reveal" data-text="THE GALAXY'S CREATOR" style="--delay: 0.3s;">THE GALAXY'S CREATOR</h1> <!-- Added reveal with delay -->
-      <h2 class="reveal" style="--delay: 0.5s;"><span id="typed-name">STAR COMMANDER CAITONA</span></h2> <!-- Added reveal with delay -->
-      <p class="reveal fade-in" style="--delay: 0.7s;">Cosmic Architect - Lvl 4</p> <!-- Added reveal and fade-in with delay -->
+      <h1 class="glitch" data-text="THE GALAXY'S CREATOR">THE GALAXY'S CREATOR</h1>
+      <h2><span id="typed-name">STAR COMMANDER CAITONA</span></h2>
+      <p>Cosmic Architect - Lvl 4</p>
     </div>
   </header>
 
-  <section id="about" class="reveal"> <!-- Added reveal to section -->
-    <h2 class="reveal">About The Commander</h2> <!-- Added reveal to h2 -->
-    <p class="reveal" style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;"> <!-- Added reveal to p -->
+  <section id="about">
+    <h2>About The Commander</h2>
+    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
     Greetings, fellow voyagers! I am Peter G. Caitona, a 4th-year Bachelor of Science in Computer Science (BSCS) student, charting my course through the vast cosmos of technology. While my journey may encounter nebulous academic challenges, my commitment to evolving daily is unwavering. I strive to meticulously process interstellar data (lessons) and integrate knowledge from my seasoned navigators (instructors) and fellow crew members (classmates).
     </p>
     <br>
-    <p class="reveal" style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc; --delay: 0.2s;"> <!-- Added reveal to p with delay -->
+    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
      The realm of Computer Science is an infinite universe, constantly pushing the boundaries of my starship. I believe that cosmic exploration (learning) is an endless mission, with growth fueled by persistent effort, cosmic patience, and unyielding determination. I am constantly upgrading my programming protocols and technological modules, embracing every anomaly and experience as a valuable lesson. My ultimate objective is to become a more advanced version of myself and to steadily accumulate the wisdom and resilience required to conquer the IT galaxy.
     </p>
   </section>
 
   <!-- COSMIC ARSENAL SECTION -->
-  <section id="skills" class="reveal"> <!-- Added reveal to section -->
-    <h2 class="reveal">Our Cosmic Arsenal</h2> <!-- Added reveal to h2 -->
-    <p class="reveal" style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;"> <!-- Added reveal to p -->
+  <section id="skills">
+    <h2>Our Cosmic Arsenal</h2>
+    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
       These are the specialized modules and cosmic languages I command, along with my expertise in galactic interface design.
     </p>
 
-    <div class="skills-grid"> <!-- Removed reveal from grid parent, children have it -->
+    <div class="skills-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;">
 
       <div class="skill-card reveal">
         <div>🌌</div>
@@ -100,13 +100,13 @@
   </section>
 
   <!-- INTERSTELLAR COMMUNICATIONS SECTION -->
-  <section id="social" class="reveal"> <!-- Added reveal to section -->
-    <h2 class="reveal">Interstellar Communications</h2> <!-- Added reveal to h2 -->
-    <p class="reveal" style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;"> <!-- Added reveal to p -->
+  <section id="social">
+    <h2>Interstellar Communications</h2>
+    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
       Initiate contact! You can locate and transmit messages to me across these galactic frequencies.
     </p>
 
-    <div class="social-grid"> <!-- Removed reveal from grid parent, children have it -->
+    <div class="social-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;max-width:900px;margin:0 auto;">
 
       <a href="https://www.facebook.com/profile.php?id=61570689056441" target="_blank" rel="noopener noreferrer" class="social-card reveal">
         <div>🛰️</div>
@@ -129,23 +129,23 @@
     </div>
   </section>
 
-  <section id="contact" class="reveal"> <!-- Added reveal to section -->
-    <h2 class="reveal">Direct Transmission</h2> <!-- Added reveal to h2 -->
-    <p class="reveal" style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;"> <!-- Added reveal to p -->
+  <section id="contact">
+    <h2>Direct Transmission</h2>
+    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
       Send a secure transmission to Galactic Command. Your message will be routed directly to the Star Commander.
     </p>
-    <form id="contact-form" class="contact-form reveal" style="--delay: 0.2s;"> <!-- Added reveal with delay -->
-      <input type="text" id="name" name="name" placeholder="Your Designation" required class="reveal" style="--delay: 0.4s;"> <!-- Added reveal with delay -->
-      <input type="email" id="email" name="email" placeholder="Your Starfleet Email" required class="reveal" style="--delay: 0.5s;"> <!-- Added reveal with delay -->
-      <textarea id="message" name="message" rows="4" placeholder="Your Transmission" required class="reveal" style="--delay: 0.6s;"></textarea> <!-- Added reveal with delay -->
-      <button type="submit" class="reveal" style="--delay: 0.7s;">Send Transmission</button> <!-- Added reveal with delay -->
+    <form id="contact-form" class="contact-form">
+      <input type="text" id="name" name="name" placeholder="Your Designation" required>
+      <input type="email" id="email" name="email" placeholder="Your Starfleet Email" required>
+      <textarea id="message" name="message" rows="4" placeholder="Your Transmission" required></textarea>
+      <button type="submit">Send Transmission</button>
       <p class="form-status" id="form-status"></p>
     </form>
-    <p class="reveal fade-in" style="text-align:center;margin-top:1.5rem; --delay: 0.8s;">Galactic Email: commander.caitona@galactic.com</p> <!-- Added reveal with delay -->
-    <p class="reveal fade-in" style="text-align:center; --delay: 0.9s;">Quantum Comms Freq: +1-936-678-4396</p> <!-- Added reveal with delay -->
+    <p style="text-align:center;margin-top:1.5rem;">Galactic Email: commander.caitona@galactic.com</p>
+    <p style="text-align:center;">Quantum Comms Freq: +1-936-678-4396</p>
   </section>
 
-  <footer class="reveal fade-in" style="--delay: 0.2s;"> <!-- Added reveal to footer -->
+  <footer>
     © 2026 Peter Caitona • Galactic Command
   </footer>
 
