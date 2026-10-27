@@ -1,4 +1,4 @@
-// ── Star background ──
+// ── Star background (with warp speed for page transitions) ──
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let w, h;
@@ -16,14 +16,29 @@ const stars = Array.from({ length: 200 }, () => ({
   s: Math.random() * 0.5 + 0.2
 }));
 
+let warp = 1;        // current speed multiplier
+let warpTarget = 1;  // speed we are easing toward
+
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
+  warp += (warpTarget - warp) * 0.08;
   ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = '#ffffff';
+
   stars.forEach(star => {
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-    ctx.fill();
-    star.y += star.s;
+    if (warp > 1.5) {
+      // Warp mode: draw stretched streaks
+      ctx.lineWidth = Math.max(star.r, 0.6);
+      ctx.beginPath();
+      ctx.moveTo(star.x, star.y);
+      ctx.lineTo(star.x, star.y - star.s * warp * 2);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    star.y += star.s * warp;
     if (star.y > h) star.y = 0;
   });
   requestAnimationFrame(animateStars);
@@ -52,33 +67,95 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ── Smooth scroll accounting for navbar height ──
+// ── Navigation elements ──
 const navEl = document.querySelector('nav');
 const navLinks = document.querySelectorAll('nav a');
 const navLinksContainer = document.querySelector('.nav-links');
 const navToggle = document.querySelector('.nav-toggle');
 
-function scrollToTarget(targetId) {
+function getTargetPosition(targetId) {
+  if (targetId === 'home') return 0;
+  const target = document.getElementById(targetId);
+  if (!target) return null;
   const navbarHeight = navEl.offsetHeight;
-  let targetPosition;
-  if (targetId === 'home') {
-    targetPosition = 0;
-  } else {
-    const target = document.getElementById(targetId);
-    if (!target) return;
-    targetPosition = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+  return target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+}
+
+// Normal smooth scroll (used as a fallback)
+function scrollToTarget(targetId) {
+  const pos = getTargetPosition(targetId);
+  if (pos === null) return;
+  window.scrollTo({ top: pos, behavior: 'smooth' });
+}
+
+// ── Cool page transition ──
+const overlay = document.getElementById('page-transition');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let transitioning = false;
+
+function transitionTo(targetId, originX, originY) {
+  if (transitioning) return;
+
+  // No overlay or reduced motion: just scroll normally
+  if (!overlay || prefersReducedMotion) {
+    scrollToTarget(targetId);
+    return;
   }
-  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+
+  const pos = getTargetPosition(targetId);
+  if (pos === null) return;
+
+  transitioning = true;
+
+  // 1) Circle expands from the click position + stars warp
+  overlay.style.setProperty('--x', originX + 'px');
+  overlay.style.setProperty('--y', originY + 'px');
+  overlay.classList.remove('leaving');
+  overlay.classList.add('covering');
+  warpTarget = 25;
+
+  // 2) Screen is covered: jump to the section and fade the overlay out
+  setTimeout(() => {
+    window.scrollTo({ top: pos, behavior: 'instant' });
+    warpTarget = 1;
+
+    const section = document.getElementById(targetId);
+    if (section) {
+      section.classList.remove('section-enter');
+      void section.offsetWidth; // restart the animation
+      section.classList.add('section-enter');
+      setTimeout(() => section.classList.remove('section-enter'), 1000);
+    }
+
+    overlay.classList.add('leaving');
+  }, 600);
+
+  // 3) Reset the overlay quietly so it is ready for next time
+  setTimeout(() => {
+    overlay.style.transition = 'none';
+    overlay.classList.remove('covering', 'leaving');
+    void overlay.offsetWidth;
+    overlay.style.transition = '';
+    transitioning = false;
+  }, 1300);
 }
 
 navLinks.forEach(link => {
   const href = link.getAttribute('href');
-  if (!href.startsWith('#')) return; // let normal links (like admin.php) navigate as usual
+  if (!href.startsWith('#')) return; // let normal links navigate as usual
   link.addEventListener('click', e => {
     e.preventDefault();
     const targetId = href.substring(1);
-    scrollToTarget(targetId);
+    transitionTo(targetId, e.clientX, e.clientY);
     if (navLinksContainer) navLinksContainer.classList.remove('open');
+  });
+});
+
+// The "Need help? Let's talk" button also gets the transition
+document.querySelectorAll('.cta-btn[href^="#"]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    transitionTo(btn.getAttribute('href').substring(1), e.clientX, e.clientY);
   });
 });
 
@@ -126,7 +203,7 @@ function updateBackToTop() {
   }
 }
 if (backToTop) {
-  backToTop.addEventListener('click', () => scrollToTarget('home'));
+  backToTop.addEventListener('click', e => transitionTo('home', e.clientX, e.clientY));
 }
 
 window.addEventListener('scroll', () => {
@@ -170,31 +247,5 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(burst, 2500 + Math.random() * 4000);
     }
     setTimeout(burst, 1200 + Math.random() * 2000);
-  });
-});
-
-// ── Contact form feedback (no backend — opens mail client) ──
-window.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('contact-form');
-  const status = document.getElementById('form-status');
-  if (!form) return;
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = form.querySelector('#name').value.trim();
-    const email = form.querySelector('#email').value.trim();
-    const message = form.querySelector('#message').value.trim();
-
-    if (!name || !email || !message) {
-      status.textContent = 'Please fill in every field before sending.';
-      return;
-    }
-
-    const subject = encodeURIComponent(`Portfolio message from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:petafromyt@email.com?subject=${subject}&body=${body}`;
-
-    status.textContent = 'Opening your email app to send this message...';
-    form.reset();
   });
 });
