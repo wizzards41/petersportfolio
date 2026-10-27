@@ -452,6 +452,94 @@ footer {
   display: block;
 }
 
+/* ── VA Services Section ── */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(139, 233, 253, 0.2);
+  border-radius: 18px;
+  padding: 2rem 1.75rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 28px rgba(138, 43, 226, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 50px rgba(138, 43, 226, 0.4);
+  border-color: rgba(139, 233, 253, 0.45);
+}
+
+.service-icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.service-card h3 {
+  font-size: 1.2rem;
+  color: #8be9fd;
+  margin-bottom: 1.25rem;
+}
+
+.service-block {
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.9rem;
+  border-left: 3px solid;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.service-block h4 {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.service-block p,
+.service-block li {
+  color: #cfd8dc;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.service-block ol {
+  padding-left: 1.2rem;
+}
+
+.service-block.problem { border-color: #ff79c6; }
+.service-block.problem h4 { color: #ff79c6; }
+
+.service-block.process { border-color: #bd93f9; }
+.service-block.process h4 { color: #bd93f9; }
+
+.service-block.result { border-color: #50fa7b; }
+.service-block.result h4 { color: #50fa7b; }
+
+.cta-btn {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #8be9fd, #bd93f9);
+  color: #0b0f1a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.45);
+}
+
 /* ── Contact form feedback ── */
 .contact-form {
   max-width: 480px;
@@ -528,6 +616,10 @@ footer {
   }
 
   .conflict-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-grid {
     grid-template-columns: 1fr;
   }
 
