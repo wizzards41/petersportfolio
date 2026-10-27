@@ -144,7 +144,7 @@ function transitionTo(targetId, x, y) {
       transitioning = false;
     };
   };
-}
+
 
   // 1) Circle expands from the click position + stars warp
   overlay.style.setProperty('--x', originX + 'px');
