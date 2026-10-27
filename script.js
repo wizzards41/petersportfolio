@@ -1,4 +1,4 @@
-// ── Star background (with warp speed for page transitions) ──
+// ── Star background ──
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let w, h;
@@ -16,29 +16,14 @@ const stars = Array.from({ length: 200 }, () => ({
   s: Math.random() * 0.5 + 0.2
 }));
 
-let warp = 1;        // current speed multiplier
-let warpTarget = 1;  // speed we are easing toward
-
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
-  warp += (warpTarget - warp) * 0.08;
   ctx.fillStyle = '#ffffff';
-  ctx.strokeStyle = '#ffffff';
-
   stars.forEach(star => {
-    if (warp > 1.5) {
-      // Warp mode: draw stretched streaks
-      ctx.lineWidth = Math.max(star.r, 0.6);
-      ctx.beginPath();
-      ctx.moveTo(star.x, star.y);
-      ctx.lineTo(star.x, star.y - star.s * warp * 2);
-      ctx.stroke();
-    } else {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    star.y += star.s * warp;
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+    ctx.fill();
+    star.y += star.s;
     if (star.y > h) star.y = 0;
   });
   requestAnimationFrame(animateStars);
@@ -73,128 +58,74 @@ const navLinks = document.querySelectorAll('nav a');
 const navLinksContainer = document.querySelector('.nav-links');
 const navToggle = document.querySelector('.nav-toggle');
 
-function getTargetPosition(targetId) {
-  if (targetId === 'home') return 0;
-  const target = document.getElementById(targetId);
-  if (!target) return null;
-  const navbarHeight = navEl.offsetHeight;
-  return target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+// ── Custom smooth scroll (works even if Windows animations are off) ──
+let scrollAnimId = null;
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-// Normal smooth scroll (used as a fallback)
+function smoothScrollTo(targetY, duration = 900) {
+  if (scrollAnimId) cancelAnimationFrame(scrollAnimId);
+
+  const maxY = document.documentElement.scrollHeight - window.innerHeight;
+  targetY = Math.max(0, Math.min(targetY, maxY));
+
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+  if (Math.abs(distance) < 2) return;
+
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+    if (progress < 1) {
+      scrollAnimId = requestAnimationFrame(step);
+    } else {
+      scrollAnimId = null;
+    }
+  }
+  scrollAnimId = requestAnimationFrame(step);
+}
+
+// Stop the animation if the user scrolls manually
+['wheel', 'touchstart', 'keydown'].forEach(evt => {
+  window.addEventListener(evt, () => {
+    if (scrollAnimId) {
+      cancelAnimationFrame(scrollAnimId);
+      scrollAnimId = null;
+    }
+  }, { passive: true });
+});
+
 function scrollToTarget(targetId) {
-  const pos = getTargetPosition(targetId);
-  if (pos === null) return;
-  window.scrollTo({ top: pos, behavior: 'smooth' });
-}
-
-// ── Cool page transition ──
-const overlay = document.getElementById('page-transition');
-let transitioning = false;
-
-function transitionTo(targetId, x, y) {
-  if (transitioning) return;
-
-  const pos = getTargetPosition(targetId);
-  if (pos === null) return;
-
-  // If the overlay is missing from index.html, fall back to normal scrolling
-  if (!overlay) {
-    scrollToTarget(targetId);
+  if (targetId === 'home') {
+    smoothScrollTo(0);
     return;
   }
-
-  transitioning = true;
-  warpTarget = 25; // stars stretch into streaks
-  overlay.style.opacity = '1';
-
-  // 1) Circle expands from the click position
-  const cover = overlay.animate(
-    [
-      { clipPath: `circle(0% at ${x}px ${y}px)` },
-      { clipPath: `circle(150% at ${x}px ${y}px)` }
-    ],
-    { duration: 550, easing: 'cubic-bezier(0.7, 0, 0.3, 1)', fill: 'forwards' }
-  );
-
-  cover.onfinish = () => {
-    // 2) Screen is covered: jump to the section
-    window.scrollTo({ top: pos, behavior: 'instant' });
-    warpTarget = 1;
-
-    const section = document.getElementById(targetId);
-    if (section) {
-      section.animate(
-        [
-          { opacity: 0, transform: 'translateY(40px) scale(0.96)', filter: 'blur(6px)' },
-          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' }
-        ],
-        { duration: 900, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' }
-      );
-    }
-
-    // 3) Fade the circle out, then reset
-    const fade = overlay.animate(
-      [{ opacity: 1 }, { opacity: 0 }],
-      { duration: 600, fill: 'forwards' }
-    );
-    fade.onfinish = () => {
-      cover.cancel();
-      fade.cancel();
-      transitioning = false;
-    };
-  };
-
-
-  // 1) Circle expands from the click position + stars warp
-  overlay.style.setProperty('--x', originX + 'px');
-  overlay.style.setProperty('--y', originY + 'px');
-  overlay.classList.remove('leaving');
-  overlay.classList.add('covering');
-  warpTarget = 25;
-
-  // 2) Screen is covered: jump to the section and fade the overlay out
-  setTimeout(() => {
-    window.scrollTo({ top: pos, behavior: 'instant' });
-    warpTarget = 1;
-
-    const section = document.getElementById(targetId);
-    if (section) {
-      section.classList.remove('section-enter');
-      void section.offsetWidth; // restart the animation
-      section.classList.add('section-enter');
-      setTimeout(() => section.classList.remove('section-enter'), 1000);
-    }
-
-    overlay.classList.add('leaving');
-  }, 600);
-
-  // 3) Reset the overlay quietly so it is ready for next time
-  setTimeout(() => {
-    overlay.style.transition = 'none';
-    overlay.classList.remove('covering', 'leaving');
-    void overlay.offsetWidth;
-    overlay.style.transition = '';
-    transitioning = false;
-  }, 1300);
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  const navbarHeight = navEl.offsetHeight;
+  const y = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+  smoothScrollTo(y);
 }
 
 navLinks.forEach(link => {
   const href = link.getAttribute('href');
-  if (!href.startsWith('#')) return; // let normal links navigate as usual
+  if (!href.startsWith('#')) return;
   link.addEventListener('click', e => {
     e.preventDefault();
-    const targetId = href.substring(1);
-    transitionTo(targetId, e.clientX, e.clientY);
+    scrollToTarget(href.substring(1));
     if (navLinksContainer) navLinksContainer.classList.remove('open');
   });
 });
 
-// The "Need help? Let's talk" button also gets the transition
+// "Need help? Let's talk" button
 document.querySelectorAll('.cta-btn[href^="#"]').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
-    transitionTo(btn.getAttribute('href').substring(1), e.clientX, e.clientY);
+    scrollToTarget(btn.getAttribute('href').substring(1));
   });
 });
 
@@ -226,6 +157,10 @@ function updateActiveLink() {
       currentId = section.getAttribute('id');
     }
   });
+  // At the very bottom of the page, highlight the last section
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5) {
+    currentId = 'contact';
+  }
   navLinks.forEach(link => {
     link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
   });
@@ -242,7 +177,7 @@ function updateBackToTop() {
   }
 }
 if (backToTop) {
-  backToTop.addEventListener('click', e => transitionTo('home', e.clientX, e.clientY));
+  backToTop.addEventListener('click', () => scrollToTarget('home'));
 }
 
 window.addEventListener('scroll', () => {
@@ -276,7 +211,7 @@ window.addEventListener('DOMContentLoaded', () => {
   typeChar();
 });
 
-// ── Glitch text effect (Solana-style periodic burst) ──
+// ── Glitch text effect ──
 window.addEventListener('DOMContentLoaded', () => {
   const glitchEls = document.querySelectorAll('.glitch');
   glitchEls.forEach(el => {
