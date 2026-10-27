@@ -372,86 +372,6 @@ footer {
   border-color: rgba(139, 233, 253, 0.4);
 }
 
-/* ── Internal Conflict Section ── */
-#internal-conflict h2 {
-  background: linear-gradient(90deg, #f1fa8c, #ffb86c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.conflict-intro {
-  max-width: 800px;
-  margin: 0 auto 3rem auto;
-  text-align: center;
-  color: #cfd8dc;
-  line-height: 1.7;
-  font-style: italic;
-  opacity: 0.85;
-}
-
-.conflict-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.8rem;
-}
-
-.conflict-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(241, 250, 140, 0.15);
-  border-radius: 18px;
-  padding: 1.8rem 2rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 28px rgba(255, 184, 108, 0.12);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.conflict-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #f1fa8c, #ffb86c);
-  border-radius: 4px 0 0 4px;
-}
-
-.conflict-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 0 50px rgba(255, 184, 108, 0.3);
-  border-color: rgba(241, 250, 140, 0.35);
-}
-
-.conflict-card .q-number {
-  font-size: 0.75rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #ffb86c;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-.conflict-card h3 {
-  font-size: 1.05rem;
-  color: #f1fa8c;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-}
-
-.conflict-card p {
-  color: #cfd8dc;
-  line-height: 1.75;
-  font-size: 0.95rem;
-}
-
-.conflict-card .icon {
-  font-size: 1.8rem;
-  margin-bottom: 0.8rem;
-  display: block;
-}
-
 /* ── VA Skills Section ── */
 .va-wrapper {
   max-width: 1100px;
@@ -534,56 +454,6 @@ footer {
   box-shadow: 0 0 25px rgba(138, 43, 226, 0.45);
 }
 
-/* ── Contact form feedback ── */
-.contact-form {
-  max-width: 480px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.contact-form input,
-.contact-form textarea {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  padding: 0.8rem 1rem;
-  color: #ffffff;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: #8be9fd;
-  box-shadow: 0 0 15px rgba(139, 233, 253, 0.25);
-}
-
-.contact-form button {
-  background: linear-gradient(90deg, #8be9fd, #bd93f9);
-  border: none;
-  border-radius: 10px;
-  padding: 0.8rem 1rem;
-  font-weight: 600;
-  color: #0b0f1a;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.contact-form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(138, 43, 226, 0.45);
-}
-
-.form-status {
-  text-align: center;
-  min-height: 1.2em;
-  font-size: 0.9rem;
-  color: #8be9fd;
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -598,19 +468,6 @@ footer {
 
   section {
     padding: 3rem 6%;
-  }
-
-  .project-row {
-    grid-template-columns: 1fr !important;
-    text-align: center;
-  }
-
-  .img-box {
-    margin: 0 auto;
-  }
-
-  .conflict-grid {
-    grid-template-columns: 1fr;
   }
 
   .va-boxes {
