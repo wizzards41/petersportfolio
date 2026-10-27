@@ -452,77 +452,71 @@ footer {
   display: block;
 }
 
-/* ── VA Services Section ── */
-.service-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+/* ── VA Skills Section ── */
+.va-wrapper {
   max-width: 1100px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
 }
 
-.service-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(139, 233, 253, 0.2);
-  border-radius: 18px;
-  padding: 2rem 1.75rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 28px rgba(138, 43, 226, 0.15);
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 0 50px rgba(138, 43, 226, 0.4);
-  border-color: rgba(139, 233, 253, 0.45);
-}
-
-.service-icon {
-  font-size: 2.2rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.service-card h3 {
-  font-size: 1.2rem;
+.skill-title {
+  font-size: 1.4rem;
   color: #8be9fd;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
 }
 
-.service-block {
-  padding: 0.9rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 0.9rem;
-  border-left: 3px solid;
-  background: rgba(255, 255, 255, 0.03);
+.va-boxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
 
-.service-block h4 {
-  font-size: 0.75rem;
+.va-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 4px solid;
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.va-box:hover {
+  transform: translateY(-6px);
+}
+
+.va-box h4 {
+  font-size: 0.8rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.8rem;
 }
 
-.service-block p,
-.service-block li {
+.va-box p,
+.va-box li {
   color: #cfd8dc;
   font-size: 0.92rem;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
-.service-block ol {
+.va-box ol {
   padding-left: 1.2rem;
 }
 
-.service-block.problem { border-color: #ff79c6; }
-.service-block.problem h4 { color: #ff79c6; }
+.va-box.problem { border-top-color: #ff79c6; }
+.va-box.problem h4 { color: #ff79c6; }
+.va-box.problem:hover { box-shadow: 0 0 35px rgba(255, 121, 198, 0.3); }
 
-.service-block.process { border-color: #bd93f9; }
-.service-block.process h4 { color: #bd93f9; }
+.va-box.process { border-top-color: #bd93f9; }
+.va-box.process h4 { color: #bd93f9; }
+.va-box.process:hover { box-shadow: 0 0 35px rgba(189, 147, 249, 0.35); }
 
-.service-block.result { border-color: #50fa7b; }
-.service-block.result h4 { color: #50fa7b; }
+.va-box.result { border-top-color: #50fa7b; }
+.va-box.result h4 { color: #50fa7b; }
+.va-box.result:hover { box-shadow: 0 0 35px rgba(80, 250, 123, 0.3); }
 
 .cta-btn {
   display: inline-block;
@@ -619,7 +613,7 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .service-grid {
+  .va-boxes {
     grid-template-columns: 1fr;
   }
 
@@ -641,7 +635,7 @@ footer {
   }
 
   nav .nav-links.open {
-    max-height: 320px;
+    max-height: 380px;
   }
 
   nav .nav-links a {
