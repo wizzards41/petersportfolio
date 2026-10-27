@@ -90,22 +90,61 @@ function scrollToTarget(targetId) {
 
 // ── Cool page transition ──
 const overlay = document.getElementById('page-transition');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let transitioning = false;
 
-function transitionTo(targetId, originX, originY) {
+function transitionTo(targetId, x, y) {
   if (transitioning) return;
-
-  // No overlay or reduced motion: just scroll normally
-  if (!overlay || prefersReducedMotion) {
-    scrollToTarget(targetId);
-    return;
-  }
 
   const pos = getTargetPosition(targetId);
   if (pos === null) return;
 
+  // If the overlay is missing from index.html, fall back to normal scrolling
+  if (!overlay) {
+    scrollToTarget(targetId);
+    return;
+  }
+
   transitioning = true;
+  warpTarget = 25; // stars stretch into streaks
+  overlay.style.opacity = '1';
+
+  // 1) Circle expands from the click position
+  const cover = overlay.animate(
+    [
+      { clipPath: `circle(0% at ${x}px ${y}px)` },
+      { clipPath: `circle(150% at ${x}px ${y}px)` }
+    ],
+    { duration: 550, easing: 'cubic-bezier(0.7, 0, 0.3, 1)', fill: 'forwards' }
+  );
+
+  cover.onfinish = () => {
+    // 2) Screen is covered: jump to the section
+    window.scrollTo({ top: pos, behavior: 'instant' });
+    warpTarget = 1;
+
+    const section = document.getElementById(targetId);
+    if (section) {
+      section.animate(
+        [
+          { opacity: 0, transform: 'translateY(40px) scale(0.96)', filter: 'blur(6px)' },
+          { opacity: 1, transform: 'translateY(0) scale(1)', filter: 'blur(0)' }
+        ],
+        { duration: 900, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' }
+      );
+    }
+
+    // 3) Fade the circle out, then reset
+    const fade = overlay.animate(
+      [{ opacity: 1 }, { opacity: 0 }],
+      { duration: 600, fill: 'forwards' }
+    );
+    fade.onfinish = () => {
+      cover.cancel();
+      fade.cancel();
+      transitioning = false;
+    };
+  };
+}
 
   // 1) Circle expands from the click position + stars warp
   overlay.style.setProperty('--x', originX + 'px');
