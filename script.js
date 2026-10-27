@@ -1,4 +1,4 @@
-// ── Star background ──
+// ── Star background (with warp effect) ──
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let w, h;
@@ -9,23 +9,55 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+const starColors = ['#ffffff', '#ffffff', '#8be9fd', '#bd93f9'];
+
 const stars = Array.from({ length: 200 }, () => ({
   x: Math.random() * w,
   y: Math.random() * h,
   r: Math.random() * 1.5,
-  s: Math.random() * 0.5 + 0.2
+  s: Math.random() * 0.5 + 0.2,
+  c: starColors[Math.floor(Math.random() * starColors.length)]
 }));
+
+// warp > 0 = flying down the page (stars rush up)
+// warp < 0 = flying up the page (stars rush down)
+let warp = 0;
+let warpTarget = 0;
 
 function animateStars() {
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = '#ffffff';
+  warp += (warpTarget - warp) * 0.12;
+  if (Math.abs(warp) < 0.01 && warpTarget === 0) warp = 0;
+
+  const warping = Math.abs(warp) > 0.04;
+  ctx.lineCap = 'round';
+
   stars.forEach(star => {
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
-    ctx.fill();
-    star.y += star.s;
-    if (star.y > h) star.y = 0;
+    // Normal drift plus warp speed (bigger/faster stars feel closer)
+    const vy = star.s - warp * (6 + star.s * 45);
+
+    if (warping) {
+      const tail = vy * 2.6;
+      ctx.globalAlpha = Math.min(1, 0.35 + Math.abs(warp) * 0.65);
+      ctx.strokeStyle = star.c;
+      ctx.lineWidth = Math.max(star.r * 0.9, 0.7);
+      ctx.beginPath();
+      ctx.moveTo(star.x, star.y);
+      ctx.lineTo(star.x, star.y - tail);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    } else {
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    star.y += vy;
+    if (star.y > h) { star.y = 0; if (warping) star.x = Math.random() * w; }
+    if (star.y < 0) { star.y = h; if (warping) star.x = Math.random() * w; }
   });
+
   requestAnimationFrame(animateStars);
 }
 animateStars();
@@ -58,14 +90,22 @@ const navLinks = document.querySelectorAll('nav a');
 const navLinksContainer = document.querySelector('.nav-links');
 const navToggle = document.querySelector('.nav-toggle');
 
-// ── Custom smooth scroll (works even if Windows animations are off) ──
+// ── Custom smooth scroll + star warp ──
 let scrollAnimId = null;
 
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-function smoothScrollTo(targetY, duration = 900) {
+function stopScrollAnimation() {
+  if (scrollAnimId) {
+    cancelAnimationFrame(scrollAnimId);
+    scrollAnimId = null;
+  }
+  warpTarget = 0;
+}
+
+function smoothScrollTo(targetY, duration = 1100) {
   if (scrollAnimId) cancelAnimationFrame(scrollAnimId);
 
   const maxY = document.documentElement.scrollHeight - window.innerHeight;
@@ -73,17 +113,25 @@ function smoothScrollTo(targetY, duration = 900) {
 
   const startY = window.scrollY;
   const distance = targetY - startY;
-  if (Math.abs(distance) < 2) return;
+  if (Math.abs(distance) < 2) { warpTarget = 0; return; }
 
+  const direction = distance > 0 ? 1 : -1;
+  // Longer scrolls get a stronger warp
+  const strength = Math.min(1, 0.45 + Math.abs(distance) / 1500);
   const startTime = performance.now();
 
   function step(now) {
     const progress = Math.min((now - startTime) / duration, 1);
     window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+
+    // Warp builds up, peaks in the middle, then fades out
+    warpTarget = direction * strength * Math.sin(Math.PI * progress);
+
     if (progress < 1) {
       scrollAnimId = requestAnimationFrame(step);
     } else {
       scrollAnimId = null;
+      warpTarget = 0;
     }
   }
   scrollAnimId = requestAnimationFrame(step);
@@ -92,10 +140,7 @@ function smoothScrollTo(targetY, duration = 900) {
 // Stop the animation if the user scrolls manually
 ['wheel', 'touchstart', 'keydown'].forEach(evt => {
   window.addEventListener(evt, () => {
-    if (scrollAnimId) {
-      cancelAnimationFrame(scrollAnimId);
-      scrollAnimId = null;
-    }
+    if (scrollAnimId) stopScrollAnimation();
   }, { passive: true });
 });
 
