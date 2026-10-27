@@ -5,10 +5,6 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: radial-gradient(circle at top, #1b2735, #090a0f 70%);
   color: #ffffff;
@@ -168,7 +164,7 @@ nav {
   align-items: center;
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.4);
-  z-index: 100;
+  z-index: 10;
 }
 
 nav .nav-links {
@@ -237,6 +233,10 @@ section h2 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
   text-align: center;
+}
+
+#contact {
+  min-height: 70vh;
 }
 
 .cards {
@@ -452,41 +452,6 @@ footer {
 .cta-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 25px rgba(138, 43, 226, 0.45);
-}
-
-/* ── Page transition (galaxy warp) ── */
-#page-transition {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  pointer-events: none;
-  --x: 50%;
-  --y: 50%;
-  background:
-    radial-gradient(circle at var(--x) var(--y), rgba(189, 147, 249, 0.55), rgba(11, 15, 26, 0.88) 70%),
-    linear-gradient(135deg, rgba(139, 233, 253, 0.35), rgba(189, 147, 249, 0.35));
-  backdrop-filter: blur(6px);
-  clip-path: circle(0% at var(--x) var(--y));
-  transition: clip-path 0.55s cubic-bezier(0.7, 0, 0.3, 1);
-}
-
-#page-transition.covering {
-  clip-path: circle(150% at var(--x) var(--y));
-}
-
-#page-transition.leaving {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-/* New section zooms in after the jump */
-.section-enter {
-  animation: section-enter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes section-enter {
-  0%   { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(6px); }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
