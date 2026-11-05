@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MY Portfolio</title>
+  <title>Peter Caitona | Portfolio</title>
   <link rel="icon" type="image/svg+xml" href="img/logo.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,240 +17,221 @@
   <div id="scroll-progress"></div>
   <canvas id="stars"></canvas>
 
+  <!-- ══════════ FLOATING NAVBAR ══════════ -->
   <nav>
-    <strong style="display:flex;align-items:center;gap:8px;">
-      <img src="img/logo.svg" alt="MyGalaxy logo" width="28" height="28">
-      MyGalaxy
-    </strong>
+    <div class="nav-left">
+      <img src="img/logo.svg" alt="MyGalaxy logo" width="26" height="26">
+      <span class="avail-pill"><i class="dot"></i>Available for Work</span>
+    </div>
+
     <button class="nav-toggle" aria-label="Toggle navigation menu">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
+
     <div class="nav-links">
       <a href="#home">Home</a>
       <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#services">VA Skills</a>
-      <a href="#social">Social Media</a>
+      <a href="#skills">Skills <sup>[5]</sup></a>
+      <a href="#services">VA Skills <sup>[3]</sup></a>
       <a href="#contact">Contact</a>
     </div>
+
+    <a href="#contact" class="nav-cta">Let's Talk <span>↗</span></a>
   </nav>
 
+  <!-- ══════════ HERO ══════════ -->
   <header id="home">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
-      <div style="width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#8be9fd,#bd93f9);padding:4px;">
-        <div style="width:100%;height:100%;border-radius:50%;background:#0b0f1a;display:flex;align-items:center;justify-content:center;">
-         <img src="img/my picture.jpg" alt="Profile Picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-        </div>
-      </div>
-      <h1 class="glitch" data-text="My E-PORTFOLIO">My E-PORTFOLIO</h1>
-      <h2><span id="typed-name">Peter Caitona</span></h2>
-      <p>BSCS - 4</p>
+    <h1 class="hero-name">
+      <span class="outline">Peter</span> <span class="solid">Caitona</span>
+    </h1>
+
+    <div class="hero-photo">
+      <!-- Put a transparent PNG of yourself at img/my-cutout.png for the overlap effect.
+           If it is missing, your normal photo is used instead. -->
+      <img id="hero-photo" src="img/my-cutout.jpg" alt="Peter Caitona">
+    </div>
+
+    <div class="hero-left">
+      <h2>Virtual Assistant &amp; CS Student</h2>
+      <p>I help clients stay organized with their schedules, inboxes and spreadsheets, so they can focus on their work.</p>
+      <a href="#contact" class="btn-dark">Let's collaborate <span>↗</span></a>
+    </div>
+
+    <div class="hero-right">
+      <a href="https://www.facebook.com/profile.php?id=61570689056441" target="_blank" rel="noopener noreferrer" class="pill">📘 Facebook</a>
+      <a href="https://www.instagram.com/itsme.petes/" target="_blank" rel="noopener noreferrer" class="pill">📷 Instagram</a>
+      <a href="https://t.me/caitonapeter" target="_blank" rel="noopener noreferrer" class="pill">✈️ Telegram</a>
     </div>
   </header>
 
+  <!-- ══════════ ABOUT ══════════ -->
   <section id="about">
-    <h2>About Me</h2>
-    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
-    Hello! I am Peter G. Caitona, a 4th-year Bachelor of Science in Computer Science (BSCS) student. 
-    While I may not always excel in academic activities, I am committed to improving myself every day.
-     I make a consistent effort to listen carefully, understand my lessons, and learn from my instructors and classmates.
-    </p>
-    <br>
-    <p style="max-width:800px;margin:auto;text-align:center;color:#cfd8dc;">
-     Computer Science is a challenging field, but it motivates me to push beyond my limits.
-      I believe that learning is a continuous process, and growth comes from effort, patience, and determination. 
-      I am doing my best to develop my skills in programming and technology, and I am open to learning from mistakes and experiences.
-       My goal is to become a better version of myself and gradually build the knowledge and confidence needed to succeed in the IT industry.
-    </p>
+    <div class="inner">
+      <div class="panel">
+        <span class="ghost">ABOUT</span>
+        <div class="panel-head">
+          <h2>/About me</h2>
+          <span class="panel-note">BSCS, 4th year</span>
+        </div>
+        <div class="about-text">
+          <p>
+            Hello! I am Peter G. Caitona, a 4th-year Bachelor of Science in Computer Science (BSCS) student.
+            While I may not always excel in academic activities, I am committed to improving myself every day.
+            I make a consistent effort to listen carefully, understand my lessons, and learn from my instructors and classmates.
+          </p>
+          <p>
+            Computer Science is a challenging field, but it motivates me to push beyond my limits.
+            I believe that learning is a continuous process, and growth comes from effort, patience, and determination.
+            I am doing my best to develop my skills in programming and technology, and I am open to learning from mistakes and experiences.
+            My goal is to become a better version of myself and gradually build the knowledge and confidence needed to succeed in the IT industry.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       SKILLS SECTION
-  ══════════════════════════════════════ -->
+  <!-- ══════════ SKILLS ══════════ -->
   <section id="skills">
-    <h2>Skills</h2>
-    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
-      Here are the programming languages and tools I've worked with, along with my experience in web design.
-    </p>
+    <div class="inner">
+      <div class="panel">
+        <span class="ghost">SKILLS</span>
+        <div class="panel-head">
+          <h2>/Skills</h2>
+          <span class="panel-note">Languages and tools I've worked with</span>
+        </div>
 
-    <div class="skills-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;">
-
-      <div class="skill-card reveal" style="background:rgba(139,233,253,0.05);border:1px solid rgba(139,233,253,0.25);border-radius:14px;padding:1.75rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.2rem;margin-bottom:0.75rem;">🐍</div>
-        <h3 style="color:#8be9fd;margin-bottom:0.25rem;">Python</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">Scripting &amp; problem solving</p>
+        <ul class="rows">
+          <li class="row">
+            <div><h3>🐍 Python</h3><p>Scripting &amp; problem solving</p></div>
+            <span class="tag">Language</span>
+          </li>
+          <li class="row">
+            <div><h3>☕ Java</h3><p>Object-oriented programming</p></div>
+            <span class="tag">Language</span>
+          </li>
+          <li class="row">
+            <div><h3>⚙️ C++</h3><p>Data structures &amp; algorithms</p></div>
+            <span class="tag">Language</span>
+          </li>
+          <li class="row">
+            <div><h3>🎯 C#</h3><p>Application development</p></div>
+            <span class="tag">Language</span>
+          </li>
+          <li class="row">
+            <div><h3>🎨 Web Design</h3><p>HTML, CSS &amp; layout design</p></div>
+            <span class="tag">Design</span>
+          </li>
+        </ul>
       </div>
-
-      <div class="skill-card reveal" style="background:rgba(189,147,249,0.05);border:1px solid rgba(189,147,249,0.25);border-radius:14px;padding:1.75rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.2rem;margin-bottom:0.75rem;">☕</div>
-        <h3 style="color:#bd93f9;margin-bottom:0.25rem;">Java</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">Object-oriented programming</p>
-      </div>
-
-      <div class="skill-card reveal" style="background:rgba(139,233,253,0.05);border:1px solid rgba(139,233,253,0.25);border-radius:14px;padding:1.75rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.2rem;margin-bottom:0.75rem;">⚙️</div>
-        <h3 style="color:#8be9fd;margin-bottom:0.25rem;">C++</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">Data structures &amp; algorithms</p>
-      </div>
-
-      <div class="skill-card reveal" style="background:rgba(189,147,249,0.05);border:1px solid rgba(189,147,249,0.25);border-radius:14px;padding:1.75rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.2rem;margin-bottom:0.75rem;">🎯</div>
-        <h3 style="color:#bd93f9;margin-bottom:0.25rem;">C#</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">Application development</p>
-      </div>
-
-      <div class="skill-card reveal" style="background:rgba(139,233,253,0.05);border:1px solid rgba(139,233,253,0.25);border-radius:14px;padding:1.75rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.2rem;margin-bottom:0.75rem;">🎨</div>
-        <h3 style="color:#8be9fd;margin-bottom:0.25rem;">Web Design</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">HTML, CSS &amp; layout design</p>
-      </div>
-
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       VA SKILLS SECTION
-  ══════════════════════════════════════ -->
+  <!-- ══════════ VA SKILLS ══════════ -->
   <section id="services">
-    <h2>VA Skills</h2>
-    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
-      Sample jobs a client might give me as a Virtual Assistant, with the problem, what I would do, and the result.
-    </p>
-
-    <div class="va-wrapper">
-
-      <!-- SKILL 1: SCHEDULE -->
-      <div class="skill-row">
-        <h3 class="skill-title">📅 Schedule &amp; Meeting Management</h3>
-        <div class="va-boxes">
-
-          <div class="va-box problem reveal">
-            <h4>The Problem</h4>
-            <p>A client has meetings all over their emails and chats. They get double-booked, miss calls, and waste time going back and forth to find a free time.</p>
-          </div>
-
-          <div class="va-box process reveal">
-            <h4>The Process I Did</h4>
-            <ol>
-              <li>Got access to the client's calendar and asked for their preferred hours</li>
-              <li>Collected all meetings into one Google Calendar</li>
-              <li>Fixed the double-booked meetings</li>
-              <li>Blocked time for breaks and focus work</li>
-              <li>Set reminders and sent a weekly schedule summary</li>
-            </ol>
-          </div>
-
-          <div class="va-box result reveal">
-            <h4>The Result</h4>
-            <p>A clean calendar with no conflicts. The client always knows what is next and shows up prepared and on time.</p>
-          </div>
-
-        </div>
+    <div class="inner">
+      <div class="section-head">
+        <h2>/VA Skills</h2>
+        <p>Sample jobs a client might give me, with the problem, what I would do, and the result.</p>
       </div>
 
-      <!-- SKILL 2: EMAIL -->
-      <div class="skill-row">
-        <h3 class="skill-title">📧 Email &amp; Inbox Management</h3>
-        <div class="va-boxes">
+      <div class="va-wrapper">
 
-          <div class="va-box problem reveal">
-            <h4>The Problem</h4>
-            <p>A client's inbox has hundreds of unread emails. Important messages from customers get buried and replies are always late.</p>
+        <!-- SKILL 1 -->
+        <div class="skill-row">
+          <h3 class="skill-title">📅 Schedule &amp; Meeting Management</h3>
+          <div class="va-boxes">
+            <div class="va-box problem reveal">
+              <h4>The Problem</h4>
+              <p>A client has meetings all over their emails and chats. They get double-booked, miss calls, and waste time going back and forth to find a free time.</p>
+            </div>
+            <div class="va-box process reveal">
+              <h4>The Process I Did</h4>
+              <ol>
+                <li>Got access to the client's calendar and asked for their preferred hours</li>
+                <li>Collected all meetings into one Google Calendar</li>
+                <li>Fixed the double-booked meetings</li>
+                <li>Blocked time for breaks and focus work</li>
+                <li>Set reminders and sent a weekly schedule summary</li>
+              </ol>
+            </div>
+            <div class="va-box result reveal">
+              <h4>The Result</h4>
+              <p>A clean calendar with no conflicts. The client always knows what is next and shows up prepared and on time.</p>
+            </div>
           </div>
-
-          <div class="va-box process reveal">
-            <h4>The Process I Did</h4>
-            <ol>
-              <li>Created labels (Urgent, Clients, Invoices, Later)</li>
-              <li>Set up filters to sort new emails automatically</li>
-              <li>Unsubscribed from junk and archived old emails</li>
-              <li>Wrote reply drafts for the client to approve</li>
-              <li>Flagged emails that needed the client's attention</li>
-            </ol>
-          </div>
-
-          <div class="va-box result reveal">
-            <h4>The Result</h4>
-            <p>An organized inbox where urgent emails stand out. Replies go out faster and nothing important is missed.</p>
-          </div>
-
         </div>
-      </div>
 
-      <!-- SKILL 3: DATA ENTRY -->
-      <div class="skill-row">
-        <h3 class="skill-title">📊 Data Entry &amp; Spreadsheets</h3>
-        <div class="va-boxes">
-
-          <div class="va-box problem reveal">
-            <h4>The Problem</h4>
-            <p>A client keeps customer orders and contacts in notes, photos, and messy files. It is hard to find information or see how the business is doing.</p>
+        <!-- SKILL 2 -->
+        <div class="skill-row">
+          <h3 class="skill-title">📧 Email &amp; Inbox Management</h3>
+          <div class="va-boxes">
+            <div class="va-box problem reveal">
+              <h4>The Problem</h4>
+              <p>A client's inbox has hundreds of unread emails. Important messages from customers get buried and replies are always late.</p>
+            </div>
+            <div class="va-box process reveal">
+              <h4>The Process I Did</h4>
+              <ol>
+                <li>Created labels (Urgent, Clients, Invoices, Later)</li>
+                <li>Set up filters to sort new emails automatically</li>
+                <li>Unsubscribed from junk and archived old emails</li>
+                <li>Wrote reply drafts for the client to approve</li>
+                <li>Flagged emails that needed the client's attention</li>
+              </ol>
+            </div>
+            <div class="va-box result reveal">
+              <h4>The Result</h4>
+              <p>An organized inbox where urgent emails stand out. Replies go out faster and nothing important is missed.</p>
+            </div>
           </div>
-
-          <div class="va-box process reveal">
-            <h4>The Process I Did</h4>
-            <ol>
-              <li>Collected all the raw information from the client</li>
-              <li>Designed a clear spreadsheet with proper columns</li>
-              <li>Entered the data and double-checked for mistakes</li>
-              <li>Added filters and formulas for totals and searching</li>
-              <li>Shared the file and showed how to update it</li>
-            </ol>
-          </div>
-
-          <div class="va-box result reveal">
-            <h4>The Result</h4>
-            <p>One accurate, searchable spreadsheet. The client can find any record in seconds and track sales easily.</p>
-          </div>
-
         </div>
+
+        <!-- SKILL 3 -->
+        <div class="skill-row">
+          <h3 class="skill-title">📊 Data Entry &amp; Spreadsheets</h3>
+          <div class="va-boxes">
+            <div class="va-box problem reveal">
+              <h4>The Problem</h4>
+              <p>A client keeps customer orders and contacts in notes, photos, and messy files. It is hard to find information or see how the business is doing.</p>
+            </div>
+            <div class="va-box process reveal">
+              <h4>The Process I Did</h4>
+              <ol>
+                <li>Collected all the raw information from the client</li>
+                <li>Designed a clear spreadsheet with proper columns</li>
+                <li>Entered the data and double-checked for mistakes</li>
+                <li>Added filters and formulas for totals and searching</li>
+                <li>Shared the file and showed how to update it</li>
+              </ol>
+            </div>
+            <div class="va-box result reveal">
+              <h4>The Result</h4>
+              <p>One accurate, searchable spreadsheet. The client can find any record in seconds and track sales easily.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:2.5rem;">
-      <a href="#contact" class="cta-btn">Need help? Let's talk</a>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════
-       SOCIAL MEDIA SECTION
-  ══════════════════════════════════════ -->
-  <section id="social">
-    <h2>Social Media</h2>
-    <p style="max-width:800px;margin:0 auto 2.5rem;text-align:center;color:#cfd8dc;">
-      Let's connect! You can find and reach me on any of these platforms.
-    </p>
-
-    <div class="social-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;max-width:900px;margin:0 auto;">
-
-      <a href="https://www.facebook.com/profile.php?id=61570689056441" target="_blank" rel="noopener noreferrer" class="social-card reveal" style="display:block;text-decoration:none;background:rgba(139,233,253,0.05);border:1px solid rgba(139,233,253,0.25);border-radius:14px;padding:2rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.4rem;margin-bottom:0.75rem;">📘</div>
-        <h3 style="color:#8be9fd;margin-bottom:0.25rem;">Facebook</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">Peter Caitona</p>
-      </a>
-
-      <a href="https://www.instagram.com/itsme.petes/" target="_blank" rel="noopener noreferrer" class="social-card reveal" style="display:block;text-decoration:none;background:rgba(189,147,249,0.05);border:1px solid rgba(189,147,249,0.25);border-radius:14px;padding:2rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.4rem;margin-bottom:0.75rem;">📷</div>
-        <h3 style="color:#bd93f9;margin-bottom:0.25rem;">Instagram</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">@itsme.petes</p>
-      </a>
-
-      <a href="https://t.me/caitonapeter" target="_blank" rel="noopener noreferrer" class="social-card reveal" style="display:block;text-decoration:none;background:rgba(139,233,253,0.05);border:1px solid rgba(139,233,253,0.25);border-radius:14px;padding:2rem 1.25rem;text-align:center;transition:transform .25s ease;">
-        <div style="font-size:2.4rem;margin-bottom:0.75rem;">✈️</div>
-        <h3 style="color:#8be9fd;margin-bottom:0.25rem;">Telegram</h3>
-        <p style="color:#cfd8dc;font-size:0.9rem;">@caitonapeter</p>
-      </a>
-
-    </div>
-  </section>
-
+  <!-- ══════════ CONTACT ══════════ -->
   <section id="contact">
-    <h2>Contact</h2>
-    <p style="text-align:center;margin-top:1.5rem;">Email: petafromyt@email.com</p>
-    <p style="text-align:center;">Cellphone Number: 09366784396</p>
+    <div class="inner contact-inner">
+      <h2 class="contact-title"><span class="outline">Let's work</span> <span class="solid">together</span></h2>
+      <p class="contact-sub">Need help with your schedule, inbox or spreadsheets? Send me a message.</p>
+
+      <div class="contact-actions">
+        <a href="mailto:petafromyt@email.com" class="btn-dark">petafromyt@email.com <span>↗</span></a>
+        <a href="tel:09366784396" class="btn-ghost">09366784396</a>
+      </div>
+
+      <div class="contact-socials">
+        <a href="https://www.facebook.com/profile.php?id=61570689056441" target="_blank" rel="noopener noreferrer" class="pill">📘 Facebook</a>
+        <a href="https://www.instagram.com/itsme.petes/" target="_blank" rel="noopener noreferrer" class="pill">📷 Instagram</a>
+        <a href="https://t.me/caitonapeter" target="_blank" rel="noopener noreferrer" class="pill">✈️ Telegram</a>
+      </div>
+    </div>
   </section>
 
   <footer>
@@ -257,6 +241,5 @@
   <button id="back-to-top" aria-label="Back to top">↑</button>
 
   <script src="script.js"></script>
-
 </body>
 </html>
