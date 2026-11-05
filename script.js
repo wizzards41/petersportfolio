@@ -33,7 +33,6 @@ function animateStars() {
   ctx.lineCap = 'round';
 
   stars.forEach(star => {
-    // Normal drift plus warp speed (bigger/faster stars feel closer)
     const vy = star.s - warp * (6 + star.s * 45);
 
     if (warping) {
@@ -62,6 +61,17 @@ function animateStars() {
 }
 animateStars();
 
+// ── Hero photo: use the transparent cutout, or fall back to the normal photo ──
+const heroImg = document.getElementById('hero-photo');
+if (heroImg) {
+  heroImg.addEventListener('error', () => {
+    if (heroImg.dataset.fallback) return; // avoid a loop
+    heroImg.dataset.fallback = '1';
+    heroImg.src = 'img/my picture.jpg';
+    heroImg.parentElement.classList.add('no-cutout');
+  });
+}
+
 // ── Reveal on scroll ──
 const reveals = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver(entries => {
@@ -71,22 +81,10 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.2 });
 reveals.forEach(r => revealObserver.observe(r));
 
-// ── Media box video hover ──
-window.addEventListener('DOMContentLoaded', () => {
-  const mediaBox = document.querySelector('.media-box');
-  if (mediaBox) {
-    const video = mediaBox.querySelector('video');
-    mediaBox.addEventListener('mouseenter', () => video.play());
-    mediaBox.addEventListener('mouseleave', () => {
-      video.pause();
-      video.currentTime = 0;
-    });
-  }
-});
-
 // ── Navigation elements ──
 const navEl = document.querySelector('nav');
-const navLinks = document.querySelectorAll('nav a');
+const navAnchors = document.querySelectorAll('nav a[href^="#"]');
+const navLinks = document.querySelectorAll('.nav-links a');
 const navLinksContainer = document.querySelector('.nav-links');
 const navToggle = document.querySelector('.nav-toggle');
 
@@ -116,7 +114,6 @@ function smoothScrollTo(targetY, duration = 1100) {
   if (Math.abs(distance) < 2) { warpTarget = 0; return; }
 
   const direction = distance > 0 ? 1 : -1;
-  // Longer scrolls get a stronger warp
   const strength = Math.min(1, 0.45 + Math.abs(distance) / 1500);
   const startTime = performance.now();
 
@@ -151,26 +148,17 @@ function scrollToTarget(targetId) {
   }
   const target = document.getElementById(targetId);
   if (!target) return;
-  const navbarHeight = navEl.offsetHeight;
+  const navbarHeight = navEl.offsetHeight + 16;
   const y = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
   smoothScrollTo(y);
 }
 
-navLinks.forEach(link => {
-  const href = link.getAttribute('href');
-  if (!href.startsWith('#')) return;
+// Every in-page link: navbar, "Let's Talk", hero and contact buttons
+document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
-    scrollToTarget(href.substring(1));
+    scrollToTarget(link.getAttribute('href').substring(1));
     if (navLinksContainer) navLinksContainer.classList.remove('open');
-  });
-});
-
-// "Need help? Let's talk" button
-document.querySelectorAll('.cta-btn[href^="#"]').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    scrollToTarget(btn.getAttribute('href').substring(1));
   });
 });
 
@@ -194,7 +182,7 @@ function updateProgressBar() {
 // ── Active nav link highlighting ──
 const sections = document.querySelectorAll('section, header[id]');
 function updateActiveLink() {
-  const navbarHeight = navEl.offsetHeight + 20;
+  const navbarHeight = navEl.offsetHeight + 40;
   let currentId = 'home';
   sections.forEach(section => {
     const top = section.getBoundingClientRect().top;
@@ -202,7 +190,6 @@ function updateActiveLink() {
       currentId = section.getAttribute('id');
     }
   });
-  // At the very bottom of the page, highlight the last section
   if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5) {
     currentId = 'contact';
   }
@@ -233,38 +220,3 @@ window.addEventListener('scroll', () => {
 updateProgressBar();
 updateActiveLink();
 updateBackToTop();
-
-// ── Typing effect for name ──
-window.addEventListener('DOMContentLoaded', () => {
-  const nameEl = document.getElementById('typed-name');
-  if (!nameEl) return;
-  const fullText = nameEl.textContent.trim();
-  nameEl.textContent = '';
-  const cursor = document.createElement('span');
-  cursor.className = 'cursor';
-  cursor.innerHTML = '&nbsp;';
-  nameEl.after(cursor);
-
-  let i = 0;
-  function typeChar() {
-    if (i < fullText.length) {
-      nameEl.textContent += fullText.charAt(i);
-      i++;
-      setTimeout(typeChar, 90);
-    }
-  }
-  typeChar();
-});
-
-// ── Glitch text effect ──
-window.addEventListener('DOMContentLoaded', () => {
-  const glitchEls = document.querySelectorAll('.glitch');
-  glitchEls.forEach(el => {
-    function burst() {
-      el.classList.add('glitch-active');
-      setTimeout(() => el.classList.remove('glitch-active'), 220);
-      setTimeout(burst, 2500 + Math.random() * 4000);
-    }
-    setTimeout(burst, 1200 + Math.random() * 2000);
-  });
-});
